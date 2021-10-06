@@ -1,0 +1,89 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://Player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://assets/Flappy_Bird_BG.png" type="Texture" id=3]
+[ext_resource path="res://assets/Flappy_Bird_Ground.png" type="Texture" id=4]
+[ext_resource path="res://PipeManager.gd" type="Script" id=5]
+[ext_resource path="res://ScoreFont.tres" type="DynamicFont" id=6]
+[ext_resource path="res://Main.gd" type="Script" id=7]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 359.134, 80.2888 )
+
+[node name="Node" type="Node"]
+script = ExtResource( 7 )
+
+[node name="Flappy_Bird_BG" type="Sprite" parent="."]
+position = Vector2( 280.481, 450.215 )
+scale = Vector2( 0.968462, 0.968462 )
+texture = ExtResource( 3 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="PipeManager" type="Node2D" parent="."]
+position = Vector2( 694.214, 375.14 )
+script = ExtResource( 5 )
+pipe_speed = 175
+
+[node name="SpawnLimit_X" type="Node2D" parent="PipeManager"]
+position = Vector2( -2.76038, 2.7601 )
+
+[node name="SpawnLimit_Y1" type="Node2D" parent="PipeManager"]
+position = Vector2( -63.4854, -227.719 )
+
+[node name="SpawnLimit_Y2" type="Node2D" parent="PipeManager"]
+position = Vector2( -59.3451, 162.854 )
+
+[node name="SpawnTimer" type="Timer" parent="PipeManager"]
+wait_time = 3.0
+
+[node name="Pipes" type="Node2D" parent="PipeManager"]
+__meta__ = {
+"_edit_group_": true,
+"_edit_lock_": true
+}
+
+[node name="Player" parent="." instance=ExtResource( 1 )]
+position = Vector2( 187.797, 339.907 )
+gravity_time = 0.8
+fall_rotation_time = 0.35
+fall_rotation_delay = 0.2
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2( 296.146, 450.368 )
+current = true
+zoom = Vector2( 1.25, 1.25 )
+
+[node name="Ground" type="StaticBody2D" parent="." groups=[
+"obstacle",
+]]
+position = Vector2( 279.016, 825.766 )
+collision_layer = 2
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Flappy_Bird_Ground" type="Sprite" parent="Ground"]
+scale = Vector2( 0.991665, 0.97537 )
+texture = ExtResource( 4 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground"]
+shape = SubResource( 1 )
+
+[node name="ScoreCounter" type="Label" parent="."]
+margin_left = 282.228
+margin_top = 110.62
+margin_right = 322.228
+margin_bottom = 126.62
+rect_scale = Vector2( 4.95462, 3.93059 )
+rect_pivot_offset = Vector2( 19.1089, 6.8825 )
+custom_fonts/font = ExtResource( 6 )
+text = "0"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="timeout" from="PipeManager/SpawnTimer" to="PipeManager" method="_on_SpawnTimer_timeout"]

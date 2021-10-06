@@ -1,0 +1,39 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Pipe.tscn" type="PackedScene" id=1]
+[ext_resource path="res://PipePair.gd" type="Script" id=2]
+
+[sub_resource type="RectangleShape2D" id=1]
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 15.3823, 604.041 )
+
+[node name="PipePair" type="RigidBody2D"]
+mode = 2
+gravity_scale = 0.0
+linear_damp = 0.0
+angular_damp = 0.0
+script = ExtResource( 2 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+disabled = true
+
+[node name="PipeBottom" parent="." instance=ExtResource( 1 )]
+position = Vector2( 1.93451, 221.492 )
+
+[node name="PipeTop" parent="." instance=ExtResource( 1 )]
+position = Vector2( 0.800476, -193.453 )
+rotation = 4.44253e-06
+scale = Vector2( 1, -1 )
+
+[node name="PointEffector" type="Area2D" parent="."]
+collision_layer = 8
+
+[node name="PointEffector_Collider" type="CollisionShape2D" parent="PointEffector"]
+position = Vector2( 74.1387, -7.12068 )
+shape = SubResource( 2 )
+
+[node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="."]
+
+[connection signal="screen_exited" from="VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_exited"]
